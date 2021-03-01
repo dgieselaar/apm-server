@@ -549,7 +549,9 @@ type metricset struct {
 // TODO(axw/simitt): add support for ingesting counts/values (histogram metrics)
 type metricsetSampleValue struct {
 	// Value holds the value of a single metric sample.
-	Value nullable.Float64 `json:"value" validate:"required"`
+	Value  nullable.Float64 `json:"value"`
+	Values []float64        `json:"values"`
+	Counts []int64          `json:"counts"`
 }
 
 type metricsetSpanRef struct {

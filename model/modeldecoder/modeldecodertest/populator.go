@@ -37,6 +37,7 @@ import (
 type Values struct {
 	Str        string
 	Int        int
+	Int64      int64
 	Float      float64
 	Bool       bool
 	Time       time.Time
@@ -122,6 +123,10 @@ func SetStructValues(in interface{}, values *Values) {
 				newVal = reflect.ValueOf(values.Str)
 			case []int:
 				newVal = reflect.ValueOf(values.Int)
+			case []int64:
+				newVal = reflect.ValueOf(values.Int64)
+			case []float64:
+				newVal = reflect.ValueOf(values.Float)
 			default:
 				if f.Type().Elem().Kind() != reflect.Struct {
 					panic(fmt.Sprintf("unhandled type %s for key %s", v, key))

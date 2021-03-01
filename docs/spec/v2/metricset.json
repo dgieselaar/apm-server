@@ -13,14 +13,34 @@
             "object"
           ],
           "properties": {
+            "counts": {
+              "type": [
+                "null",
+                "array"
+              ],
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 0
+            },
             "value": {
               "description": "Value holds the value of a single metric sample.",
-              "type": "number"
+              "type": [
+                "null",
+                "number"
+              ]
+            },
+            "values": {
+              "type": [
+                "null",
+                "array"
+              ],
+              "items": {
+                "type": "number"
+              },
+              "minItems": 0
             }
-          },
-          "required": [
-            "value"
-          ]
+          }
         }
       }
     },

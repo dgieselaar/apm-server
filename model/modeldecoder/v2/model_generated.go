@@ -1379,19 +1379,18 @@ func (val *metricset) validate() error {
 }
 
 func (val *metricsetSampleValue) IsSet() bool {
-	return val.Value.IsSet()
+	return val.Value.IsSet() || len(val.Values) > 0 || len(val.Counts) > 0
 }
 
 func (val *metricsetSampleValue) Reset() {
 	val.Value.Reset()
+	val.Values = val.Values[:0]
+	val.Counts = val.Counts[:0]
 }
 
 func (val *metricsetSampleValue) validate() error {
 	if !val.IsSet() {
 		return nil
-	}
-	if !val.Value.IsSet() {
-		return fmt.Errorf("'value' required")
 	}
 	return nil
 }

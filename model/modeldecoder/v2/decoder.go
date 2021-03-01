@@ -545,7 +545,11 @@ func mapToMetricsetModel(from *metricset, metadata *model.Metadata, reqTime time
 		out.Samples = make([]model.Sample, len(from.Samples))
 		i := 0
 		for name, sample := range from.Samples {
-			out.Samples[i] = model.Sample{Name: name, Value: sample.Value.Val}
+			if sample.Value.IsSet() {
+				out.Samples[i] = model.Sample{Name: name, Value: sample.Value.Val}
+			} else {
+				out.Samples[i] = model.Sample{Name: name, Values: sample.Values, Counts: sample.Counts}
+			}
 			i++
 		}
 	}

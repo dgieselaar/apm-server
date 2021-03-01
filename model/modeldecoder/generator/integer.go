@@ -40,3 +40,17 @@ func setPropertyRulesInteger(info *fieldInfo, p *property) error {
 	}
 	return nil
 }
+
+func setPropertyRulesNumber(info *fieldInfo, p *property) error {
+	for tagName, tagValue := range info.tags {
+		switch tagName {
+		case tagMax:
+			p.Max = json.Number(tagValue)
+			delete(info.tags, tagName)
+		case tagMin:
+			p.Min = json.Number(tagValue)
+			delete(info.tags, tagName)
+		}
+	}
+	return nil
+}

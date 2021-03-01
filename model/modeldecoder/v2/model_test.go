@@ -85,6 +85,7 @@ func TestLabelValidationRules(t *testing.T) {
 func TestSamplesValidationRules(t *testing.T) {
 	testcases := []testcase{
 		{name: "valid", data: `{"k.1\\":{"value": 34.5},"k.2.a":{"value":5}}`},
+		{name: "valid", data: `{"k.1\\":{"values": [ 1, 1 ], "counts": [ 1, 1 ]}}`},
 		{name: "key-asterisk", errorKey: "patternNoAsteriskQuote", data: `{"k1*":{"value": 34.5},"k.2.a":{"value":5}}`},
 		{name: "key-quotemark", errorKey: "patternNoAsteriskQuote", data: `{"k1\"":{"value": 34.5}}`},
 	}

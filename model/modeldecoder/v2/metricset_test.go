@@ -65,6 +65,34 @@ func TestDecodeNestedMetricset(t *testing.T) {
 	})
 }
 
+func TestDecodeHistogramSampleMetricset(t *testing.T) {
+	t.Run("decode-histogram", func(t *testing.T) {
+
+		now := time.Now()
+		input := modeldecoder.Input{Metadata: model.Metadata{}, RequestTime: now, Config: modeldecoder.Config{}}
+		str := `{"metricset":{"timestamp":1599996822281000,"samples":{"a.b": { "value": 1 }, "c.d":{"values":[ 1, 2], "counts": [ 1, 1 ]}}}}`
+		dec := decoder.NewJSONDecoder(strings.NewReader(str))
+		var out model.Metricset
+		require.NoError(t, DecodeNestedMetricset(dec, &input, &out))
+		assert.Equal(t, []model.Sample{{Name: "a.b", Value: 1}, {Name: "c.d", Values: []float64{1, 2}, Counts: []int64{1, 1}}}, out.Samples)
+		assert.Equal(t, "2020-09-13 11:33:42.281 +0000 UTC", out.Timestamp.String())
+
+	})
+
+	t.Run("empty-histogram", func(t *testing.T) {
+
+		now := time.Now()
+		input := modeldecoder.Input{Metadata: model.Metadata{}, RequestTime: now, Config: modeldecoder.Config{}}
+		str := `{"metricset":{"timestamp":1599996822281000,"samples":{"a.b": { "values": [], "counts": [] }}}}`
+		dec := decoder.NewJSONDecoder(strings.NewReader(str))
+		var out model.Metricset
+		require.NoError(t, DecodeNestedMetricset(dec, &input, &out))
+		assert.Equal(t, []model.Sample{{Name: "a.b", Values: []float64{}, Counts: []int64{}}}, out.Samples)
+		assert.Equal(t, "2020-09-13 11:33:42.281 +0000 UTC", out.Timestamp.String())
+
+	})
+}
+
 func TestDecodeMapToMetricsetModel(t *testing.T) {
 	exceptions := func(key string) bool { return false }
 
